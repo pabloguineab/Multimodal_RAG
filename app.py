@@ -188,7 +188,7 @@ if st.button("Train Model"):
 question = st.text_input("Ask a question")
 image_url = st.text_input("Image URL (if any)")
 if st.button("Submit"):
-    if model is not None, processor is not None, and retriever is not None:
+    if model is not None and processor is not None and retriever is not None:
         prompts = [
             image_url,
             f"Question: {question} Answer:"
