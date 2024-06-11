@@ -20,25 +20,24 @@ from huggingface_hub.hf_api import HfFolder
 HfFolder.save_token('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')
 
 # Función para procesar documentos
-def process_document(path_to_document):
+def process_document(uploaded_file):
     client = UnstructuredClient(api_key_auth=os.environ.get("UNSTRUCTURED_API_KEY"))
-    with open(path_to_document, "rb") as f:
-        files = shared.Files(
-            content=f.read(),
-            file_name=path_to_document,
-        )
-        req = shared.PartitionParameters(
-            files=files,
-            chunking_strategy="by_title",
-            max_characters=512,
-        )
-        try:
-            resp = client.general.partition(req)
-        except SDKError as e:
-            st.error(f"Error processing document: {e}")
-            return None
-        elements = dict_to_elements(resp.elements)
-        return elements
+    files = shared.Files(
+        content=uploaded_file.read(),
+        file_name=uploaded_file.name,
+    )
+    req = shared.PartitionParameters(
+        files=files,
+        chunking_strategy="by_title",
+        max_characters=512,
+    )
+    try:
+        resp = client.general.partition(req)
+    except SDKError as e:
+        st.error(f"Error processing document: {e}")
+        return None
+    elements = dict_to_elements(resp.elements)
+    return elements
 
 # Función para formatear documentos
 def format_docs(docs):
