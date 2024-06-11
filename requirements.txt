@@ -1,0 +1,15 @@
+streamlit
+torch
+datasets
+peft
+Pillow
+transformers
+unstructured-client
+langchain-core
+langchain-community
+chromadb
+sentence-transformers
+accelerate
+bitsandbytes
+huggingface-hub
+torchvision
