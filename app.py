@@ -15,6 +15,7 @@ from langchain.vectorstores import utils as chromautils
 from langchain.embeddings import HuggingFaceEmbeddings
 import torchvision.transforms as transforms
 
+# Configuración de claves API
 os.environ["UNSTRUCTURED_API_KEY"] = "nCWjslXLCFnyDjbVqnOS9LAWbeWZ10"
 from huggingface_hub.hf_api import HfFolder
 HfFolder.save_token('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')
@@ -68,6 +69,7 @@ def do_inference_with_retriever(model, processor, retriever, prompts, max_new_to
     generated_text = processor.batch_decode(generated_ids, skip_special_tokens=True)[0]
     return generated_text
 
+# Interfaz de Streamlit
 st.title("Document Processing and Chat Interface")
 
 # Inicializar variables globales
@@ -87,7 +89,10 @@ if uploaded_file is not None:
             page_content = getattr(element, "text", "")  # Acceder de forma segura a "text"
             documents.append(Document(page_content=page_content, metadata=metadata))
         docs = chromautils.filter_complex_metadata(documents)
-        db = Chroma.from_documents(docs, HuggingFaceEmbeddings(model_name="BAAI/bge-base-en-v1.5"))
+        
+        # Asegúrate de inicializar ChromaDB correctamente
+        embeddings = HuggingFaceEmbeddings(model_name="BAAI/bge-base-en-v1.5")
+        db = Chroma.from_documents(docs, embeddings)
         retriever = db.as_retriever(search_type="similarity", search_kwargs={"k": 4})
         st.write("Documents added to ChromaDB!")
     else:
@@ -110,7 +115,6 @@ if st.button("Train Model"):
     ds = ds["train"].train_test_split(test_size=0.002)
     train_ds = ds["train"]
     eval_ds = ds["test"]
-
 
     def convert_to_rgb(image):
         if image.mode == "RGB":
@@ -184,7 +188,7 @@ if st.button("Train Model"):
 question = st.text_input("Ask a question")
 image_url = st.text_input("Image URL (if any)")
 if st.button("Submit"):
-    if model is not None and processor is not None and retriever is not None:
+    if model is not None, processor is not None, and retriever is not None:
         prompts = [
             image_url,
             f"Question: {question} Answer:"
