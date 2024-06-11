@@ -6,7 +6,6 @@ Pillow
 transformers
 unstructured-client
 langchain-core
-unstructured
 langchain-community
 chromadb
 sentence-transformers
@@ -14,3 +13,5 @@ accelerate
 bitsandbytes
 huggingface-hub
 torchvision
+unstructured
+
