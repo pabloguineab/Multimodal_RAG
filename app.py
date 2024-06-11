@@ -92,9 +92,12 @@ if uploaded_file is not None:
         
         # Asegúrate de inicializar ChromaDB correctamente
         embeddings = HuggingFaceEmbeddings(model_name="BAAI/bge-base-en-v1.5")
-        db = Chroma.from_documents(docs, embeddings)
-        retriever = db.as_retriever(search_type="similarity", search_kwargs={"k": 4})
-        st.write("Documents added to ChromaDB!")
+        try:
+            db = Chroma.from_documents(docs, embeddings)
+            retriever = db.as_retriever(search_type="similarity", search_kwargs={"k": 4})
+            st.write("Documents added to ChromaDB!")
+        except Exception as e:
+            st.error(f"Error initializing ChromaDB: {e}")
     else:
         st.error("Failed to process document.")
 
