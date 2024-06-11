@@ -6,6 +6,7 @@ Pillow
 transformers
 unstructured-client
 langchain-core
+unstructured
 langchain-community
 chromadb
 sentence-transformers
